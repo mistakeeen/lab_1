@@ -7,6 +7,8 @@ using namespace std;
 class Base {
 public:
     virtual void print() = 0;
+    virtual void change() = 0;
+    virtual void removing() = 0;
 };
 
 
@@ -21,9 +23,11 @@ public:
     Hero(const Hero&);
     ~Hero();
     void print() override;
-    void setName(string name_);
-    void setWeapon(string weapon_type);
-    void setSkills(vector<string> skills);
+    void change() override;
+    void removing() override;
+    void setName();
+    void setWeapon();
+    void setSkills();
 
     string getName();
     string getWeapon();
@@ -44,11 +48,13 @@ public:
     Villain(const Villain&);
     ~Villain();
     void print() override;
-    void setName(string name);
-    void setWeapon(string weapon_type);
-    void setSkills(vector<string> skills);
-    void setHabitat(string habitat);
-    void setEvil(string evil_deed);
+    void change() override;
+    void removing() override;
+    void setName();
+    void setWeapon();
+    void setSkills();
+    void setHabitat();
+    void setEvil();
 
     string getName();
     string getWeapon();
@@ -68,8 +74,10 @@ public:
     Monster(const Monster&);
     ~Monster();
     void print() override;
-    void setName(string name);
-    void setDesc(string description);
+    void change() override;
+    void removing() override;
+    void setName();
+    void setDesc();
 
     string getName();
     string getDesc();

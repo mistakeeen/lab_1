@@ -13,6 +13,9 @@ public:
     void add(Base* obj);
     void remove(Base* obj);
     int getSize() const;
+    Base* getElem(int);
+    void load();
+    void save();
     void print();
 private:
     struct Node {

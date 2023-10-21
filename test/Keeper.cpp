@@ -26,6 +26,18 @@ void Keeper::add(Base* obj) {
     }
 }
 
+Base* Keeper::getElem(int i)
+{
+    Node* curr = head_;
+    int i = 1;
+    if (curr == nullptr) return 0;
+
+    while (curr != tail_) {
+        curr = curr->next;
+        i++;
+    }
+    return i;
+}
 void Keeper::remove(Base* obj) {
     Node* curr = head_;
     while (curr) {
@@ -62,11 +74,15 @@ int Keeper::getSize() const {
     return i;
 }
 void Keeper::print(){
+    int i = 1;
     Node* curr = head_;
     while (curr != tail_) {
+        cout << i << ") ";
         curr->data->print();
         curr = curr->next;
+        i++;
     }
+    cout<<i<<") ";
     curr->data->print();
 }
 Keeper::Node::Node(Base* obj) : data(obj), prev(nullptr), next(nullptr) {}
