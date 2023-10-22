@@ -23,6 +23,12 @@ Hero::Hero()
 }
 Hero::Hero(std::string name_, std::string weapon_type_, string skills_) :
     name(name_), weapon_type(weapon_type_), skills(skills_) {}
+Hero::Hero(const Hero& H)
+{
+    this->name = H.name;
+    this->weapon_type = H.weapon_type;
+    this->skills = H.skills;
+}
 Hero::~Hero()
 {
     delete this;
@@ -37,6 +43,7 @@ void Hero::change()
     int u;
     while (true)
     {
+        system("cls");
         this->print();
         cout << "1 - Изменить имя\n2 - Изменить оружие\n3 - Изменить способности\n4 - Выход" << endl;
         cin >> u;
@@ -129,6 +136,15 @@ Villain::Villain()
 Villain::Villain(std::string name_, std::string weapon_type_, std::string evil_deed_, std::string habitat_, string skills_) :
     name(name_), weapon_type(weapon_type_), evil_deed(evil_deed_), habitat(habitat_), skills(skills_) {}
 
+Villain::Villain(const Villain& V)
+{
+    this->name = V.name;
+    this->weapon_type = V.weapon_type;
+    this->skills = V.skills;
+    this->habitat = V.habitat;
+    this->evil_deed = V.evil_deed;
+}
+
 Villain::~Villain()
 {
     delete this;
@@ -161,6 +177,7 @@ void Villain::change()
     int u;
     while (true)
     {
+        system("cls");
         this->print();
         cout << "1 - Изменить имя\n2 - Изменить оружие\n3 - Изменить способности\n4 - Изменить место обитания\n5 - Изменить преступления\n6 - Назад" << endl;
         cin >> u;
@@ -271,6 +288,11 @@ Monster::Monster()
 
 Monster::Monster(std::string name_, std::string description_) :
     name(name_), description(description_) {}
+Monster::Monster(const Monster& M)
+{
+    this->name = M.name;
+    this->description = M.description;
+}
 Monster::~Monster()
 {
     delete this;
@@ -284,6 +306,7 @@ void Monster::change()
     int u;
     while (true)
     {
+        system("cls");
         this->print();
         cout << "1 - Изменить имя\n2 - Изменить описание\n3 - Выход" << endl;
         cin >> u;

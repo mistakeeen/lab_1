@@ -6,7 +6,6 @@
 class Keeper {
 public:
     Keeper();
-    Keeper(int);
     Keeper(const Keeper&);
     ~Keeper();
 
@@ -17,6 +16,7 @@ public:
     void load();
     void save();
     void print();
+    void operator --();
 private:
     struct Node {
         Base* data;

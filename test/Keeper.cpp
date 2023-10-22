@@ -6,6 +6,14 @@
 #include "keeper.h"
 
 Keeper::Keeper() : head_(nullptr), tail_(nullptr) {}
+Keeper::Keeper(const Keeper& other) {
+    Node* current = other.head_;
+    while (current != nullptr) {
+        add(current->data);
+        current = current->next;
+    }
+}
+
 Keeper::~Keeper() {
     while (head_){
         Node* temp = head_;
@@ -29,7 +37,7 @@ void Keeper::add(Base* obj) {
 
 void Keeper::remove(int index) {
     if (index < 0 || index >= getSize()) {
-        throw std::out_of_range("Index out of range");
+        throw out_of_range("Index out of range");
     }
     Node* current = head_;
     for (int i = 0; i < index; ++i) {
@@ -67,7 +75,7 @@ void Keeper::change(int index)
 {
 
     if (index < 0 || index >= getSize()) {
-        throw std::out_of_range("Index out of range");
+        throw out_of_range("Index out of range");
     }
     Node* current = head_;
     for (int i = 0; i < index; ++i) {
@@ -80,8 +88,7 @@ void Keeper::load()
     string buf;
     ifstream fin("data.txt");
     if (!fin.is_open()) {
-        cout << "Error opening file!" << endl;
-        return;
+        throw out_of_range("Error opening file");
     }
     string type, name, weapon_type, evil_deed, habitat, skills, desc;
     while (fin >> type) {
@@ -95,7 +102,6 @@ void Keeper::load()
             this->add(hero);
         }
         else if (type == "Villain") {
-            //fin >> name >> weapon_type >> skills >> habitat >> evil_deed;
             getline(fin, buf);
             getline(fin, name);
             getline(fin, weapon_type);
@@ -106,7 +112,6 @@ void Keeper::load()
             this->add(vill);
         }
         else if (type == "Monster") {
-            //fin >> name >> desc;
             getline(fin, buf);
             getline(fin, name);
             getline(fin, desc);
@@ -119,8 +124,7 @@ void Keeper::load()
 void Keeper::save() {
     ofstream file("data.txt");
     if (!file.is_open()) {
-        cout << "Error opening file!" << endl;
-        return;
+        throw out_of_range("Error opening file");
     }
     file.close();
     Node* current = head_;
@@ -135,7 +139,7 @@ void Keeper::print(){
     int i = 1;
     if (head_ == nullptr)
     {
-        cout << "Данные отсутствуют" << endl;
+        cout << "Данные отсутствуют\n" << endl;
         return;
     }
     Node* curr = head_;
@@ -147,5 +151,22 @@ void Keeper::print(){
     }
     cout<<i<<") ";
     curr->data->print();
+}
+void Keeper::operator--()
+{
+    Node* current = head_;
+    if (head_ != nullptr)
+    {
+        head_ = current->next;
+        if (head_ != nullptr) {
+            head_->prev = nullptr;
+        }
+        delete current;
+    }
+    else
+    {
+        cout << "Данные отсутствуют\n" << endl;
+        return;
+    }
 }
 Keeper::Node::Node(Base* obj) : data(obj), prev(nullptr), next(nullptr) {}
