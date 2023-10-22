@@ -11,9 +11,9 @@ public:
     ~Keeper();
 
     void add(Base* obj);
-    void remove(Base* obj);
+    void remove(int);
     int getSize() const;
-    Base* getElem(int);
+    void change(int);
     void load();
     void save();
     void print();

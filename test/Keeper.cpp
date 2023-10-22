@@ -1,6 +1,7 @@
 #include <iostream>
-#include <cstring>
+#include <string>
 #include <vector>
+#include <fstream>
 #include "base.h"
 #include "keeper.h"
 
@@ -26,42 +27,31 @@ void Keeper::add(Base* obj) {
     }
 }
 
-Base* Keeper::getElem(int i)
-{
-    Node* curr = head_;
-    int i = 1;
-    if (curr == nullptr) return 0;
-
-    while (curr != tail_) {
-        curr = curr->next;
-        i++;
+void Keeper::remove(int index) {
+    if (index < 0 || index >= getSize()) {
+        throw std::out_of_range("Index out of range");
     }
-    return i;
-}
-void Keeper::remove(Base* obj) {
-    Node* curr = head_;
-    while (curr) {
-        if (curr->data == obj) {
-            if (curr == head_) {
-                head_ = curr->next;
-                if (head_) {
-                    head_->prev = nullptr;
-                }
-            }
-            else if (curr == tail_) {
-                tail_ = curr->prev;
-                tail_->next = nullptr;
-            }
-            else {
-                curr->prev->next = curr->next;
-                curr->next->prev = curr->prev;
-            }
-            delete curr;
-            break;
+    Node* current = head_;
+    for (int i = 0; i < index; ++i) {
+        current = current->next;
+    }
+    if (current == head_) {
+        head_ = current->next;
+        if (head_ != nullptr) {
+            head_->prev = nullptr;
         }
-        curr = curr->next;
     }
+    else if (current == tail_) {
+        tail_ = current->prev;
+        tail_->next = nullptr;
+    }
+    else {
+        current->prev->next = current->next;
+        current->next->prev = current->prev;
+    }
+    delete current;
 }
+
 int Keeper::getSize() const {
     Node* curr = head_;
     int i = 1;
@@ -73,8 +63,81 @@ int Keeper::getSize() const {
     }
     return i;
 }
+void Keeper::change(int index)
+{
+
+    if (index < 0 || index >= getSize()) {
+        throw std::out_of_range("Index out of range");
+    }
+    Node* current = head_;
+    for (int i = 0; i < index; ++i) {
+        current = current->next;
+    }
+    current->data->change();
+}
+void Keeper::load()
+{
+    string buf;
+    ifstream fin("data.txt");
+    if (!fin.is_open()) {
+        cout << "Error opening file!" << endl;
+        return;
+    }
+    string type, name, weapon_type, evil_deed, habitat, skills, desc;
+    while (fin >> type) {
+        if (type == "Hero") {
+            getline(fin, buf);
+            getline(fin, name);
+            getline(fin, weapon_type);
+            getline(fin, skills);
+
+            Hero* hero = new Hero(name, weapon_type, skills);
+            this->add(hero);
+        }
+        else if (type == "Villain") {
+            //fin >> name >> weapon_type >> skills >> habitat >> evil_deed;
+            getline(fin, buf);
+            getline(fin, name);
+            getline(fin, weapon_type);
+            getline(fin, skills);
+            getline(fin, habitat);
+            getline(fin, evil_deed);
+            Villain* vill = new Villain(name, weapon_type, skills, habitat, evil_deed);
+            this->add(vill);
+        }
+        else if (type == "Monster") {
+            //fin >> name >> desc;
+            getline(fin, buf);
+            getline(fin, name);
+            getline(fin, desc);
+            Monster* monster = new Monster(name, desc);
+            this->add(monster);
+        }
+    }
+    fin.close();
+}
+void Keeper::save() {
+    ofstream file("data.txt");
+    if (!file.is_open()) {
+        cout << "Error opening file!" << endl;
+        return;
+    }
+    file.close();
+    Node* current = head_;
+    while (current != nullptr)
+    {
+        current->data->save();
+        current = current->next;
+    }
+    
+}
 void Keeper::print(){
     int i = 1;
+    if (head_ == nullptr)
+    {
+        cout << "Данные отсутствуют" << endl;
+        return;
+    }
     Node* curr = head_;
     while (curr != tail_) {
         cout << i << ") ";
